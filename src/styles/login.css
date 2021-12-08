@@ -29,3 +29,72 @@
     border-radius: 5px;
     color: #fff;
 }
+
+.imageHome{
+    width:220px;
+    height:325px;
+}
+
+.titleMovie{
+    width: 220px;
+}
+
+.rating{
+    font-size: 12px;
+}
+
+.container-add-movie{
+    padding-left:22%;
+    padding-right:22%;
+    padding-top: 5%;
+}
+
+.input-icon {
+    position: relative;
+  }
+  
+  .input-icon > i {
+    position: absolute;
+    display: block;
+    transform: translate(0, -50%);
+    top: 50%;
+    pointer-events: none;
+    width: 25px;
+    text-align: center;
+    font-style: normal;
+  }
+  
+  .input-icon > input {
+    padding-left: 25px;
+    padding-right: 0;
+  }
+  
+  .input-icon-right > i {
+    right: 0;
+  }
+  
+  .input-icon-right > input {
+    padding-left: 0;
+    padding-right: 25px;
+    text-align: right;
+  }
+
+  .pos-button{
+      margin-top: -4px;
+  }
+
+  .btn-size{
+      width:200px;
+  }
+
+  .icons-update{
+      color: #ced4da;
+      margin-right: 2px;
+      margin-left: 5px;
+      margin-top:5px;
+      cursor: pointer;
+  }
+
+  .card-movie{
+      cursor: pointer;
+  }
