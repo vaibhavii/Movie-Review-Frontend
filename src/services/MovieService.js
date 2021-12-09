@@ -22,6 +22,16 @@ export function getOmdnMovieDetails(movie_title) {
     });
 }
 
+export function searchMovie(keyword) {
+    return fetch('http://localhost:5000/search/' + keyword, {
+        method: 'GET'
+    }).then(function (response) {
+        if(response.headers.get("content-type")!=null)
+            return response.json();
+        else return null;
+    });
+}
+
 export function addMovieDetails(movie) {
     return fetch(movie_url, {
         body: JSON.stringify(movie),

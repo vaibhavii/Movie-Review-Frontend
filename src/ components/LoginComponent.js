@@ -16,6 +16,12 @@ function LoginComponent() {
         setUsername(usernameInput);
     }
 
+    useEffect(()=>{
+        if(window.sessionStorage.getItem("user") != null){
+            history('/home');
+        }
+    },[])
+
     const passwordChanged = (passwordInput) => {
         setPassword(passwordInput);
     }
@@ -27,12 +33,14 @@ function LoginComponent() {
         };
 
         if( username == "admin" && password == "admin" ){
-            history('/admin');
+            history('/home');
+            window.sessionStorage.setItem("user", "admin");
         }
-
+        else {
         loginCall(user).then( response => { 
             if(response.length != 0){
-                console.log('login sucesful')
+                window.sessionStorage.setItem("user", response[0].UserId);
+                history('/home');
             } else {
                 toast.error('Username or Password is incorrect', {
                     position: "top-center",
@@ -47,6 +55,7 @@ function LoginComponent() {
                 setPassword("");
             }
         })
+        }
     }
 
     return (
