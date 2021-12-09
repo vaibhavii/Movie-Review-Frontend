@@ -4,6 +4,10 @@ import '../styles/login.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ReactStars from "react-rating-stars-component";
+import Heart from "react-animated-heart";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 
 function MovieDescription(props) {
 
@@ -12,6 +16,7 @@ function MovieDescription(props) {
     const [review, setReview] = useState("");
     const [edit, setEdit] = useState("");
     const [showDelete, setShowDelete] = useState(false);
+    const [isFav, setIsFav] = useState(false);
 
     useEffect(()=>{
         if(props.reviewForUser.length != 0){
@@ -19,6 +24,12 @@ function MovieDescription(props) {
             setReview(props.reviewForUser[0].Review);
         }
     },[props.reviewForUser])
+
+    useEffect(()=>{
+        if(props.favorites.length != 0){
+           setIsFav(true);
+        }
+    },[props.favorites])
 
     const handleClose = () => {
         setShow(false);
@@ -53,7 +64,15 @@ function MovieDescription(props) {
         <div className="container pt-4 pb-4">
             <div className="row">
                 <button className="btn btn-dark backButton" onClick={()=>{props.goBack()}}>Go Back</button>
-                <h4 className="pt-4">{props.movie.MovieName}</h4>
+                <span className="pt-4">
+                    <span className="movie-name-desc">{props.movie.MovieName}</span>
+                    {
+                       isFav && <FontAwesomeIcon className="heart" icon={faHeart} onClick={()=>{props.deleteFav(); setIsFav(false);}}/>
+                    }
+                    {
+                       !isFav && <FontAwesomeIcon className="heart" icon={farHeart} onClick={()=>{props.addFavForUser();setIsFav(true);}}/>
+                    }
+                </span>
             </div>
             <Modal show={showDelete} onHide={handleCancel}>
                     <Modal.Header closeButton>

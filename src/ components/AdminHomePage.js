@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {getMovieDetails, deleteMovie, searchMovie} from '../services/MovieService';
+import {getFavs, addFav, deleteFav} from '../services/FavoriteService';
 import {getReviewsByMovie, getReviewsByMovieAndUser, addReview, editReview, deleteReview} from '../services/ReviewService';
 import '../styles/login.css';
 import StarRatings from 'react-star-ratings';
@@ -27,6 +28,7 @@ function AdminHomePage() {
     const [searchInput, setSearchInput] = useState("");
     const [allReviews, setAllReviews] = useState([]);
     const [userReview, setUserReviews] = useState([]);
+    const [userFavorites, setUserFavorites] = useState([]);
 
 
     const deleteMovieById = (id) => {
@@ -52,6 +54,8 @@ function AdminHomePage() {
         setShow(false);
     }
 
+
+
     const handleYes = () => {
         deleteMovieById(deleteId);
         setShow(false);
@@ -76,6 +80,35 @@ function AdminHomePage() {
                 });
             }
         })
+    }
+
+    const addFavorite = () => {
+
+        const fav = {
+            UserId: window.sessionStorage.getItem("user"),
+            MovieID: currMovie.MovieID
+        }
+
+        addFav(fav).then(res=>{
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getFavs(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
+                    console.log(res);
+                    setUserFavorites(res);
+                })
+            }
+        })
+    }
+
+    const deleteFavorite = () => {
+
+        deleteFav(userFavorites[0].FavoriteId).then(res=>{
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getFavs(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
+                    setUserFavorites(res);
+                })
+            }
+        })
+
     }
 
     const addReviewByUser = (rating, review) => {
@@ -144,8 +177,15 @@ function AdminHomePage() {
     const getReviewsForMovieUser = (id) => {
         if (window.sessionStorage.getItem("user") != "admin"){
             getReviewsByMovieAndUser(id, window.sessionStorage.getItem("user")).then(res=>{
-                console.log(res);
                 setUserReviews(res);
+            })
+        }
+    }
+
+    const getFavoritesForMovieUser = (id) => {
+        if (window.sessionStorage.getItem("user") != "admin"){
+            getFavs(id, window.sessionStorage.getItem("user")).then(res=>{
+                setUserFavorites(res);
             })
         }
     }
@@ -194,7 +234,7 @@ function AdminHomePage() {
             {
                 showDesc &&
                 <div>
-                    <MovieDescription movie={currMovie} delete={deleteReviewByUser} edit={editReviewByUser} add={addReviewByUser} reviews={allReviews} reviewForUser={userReview} goBack={goBackMovie}></MovieDescription>
+                    <MovieDescription deleteFav={deleteFavorite} addFavForUser={addFavorite} favorites={userFavorites} movie={currMovie} delete={deleteReviewByUser} edit={editReviewByUser} add={addReviewByUser} reviews={allReviews} reviewForUser={userReview} goBack={goBackMovie}></MovieDescription>
                 </div>
             }
             { (!showEdit && !showDesc) &&
@@ -228,6 +268,7 @@ function AdminHomePage() {
                             <a onClick={()=>{
                                     getReviewsForMovie(movie.MovieID);
                                     getReviewsForMovieUser(movie.MovieID);
+                                    getFavoritesForMovieUser(movie.MovieID);
                                     setShowDesc(true);
                                     setCurrMovie(movie);
                                     }}><img className="imageHome" src={movie.ImageUrl}/></a>

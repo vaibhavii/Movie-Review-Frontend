@@ -36,6 +36,18 @@
     cursor: pointer;
 }
 
+.movie-name-desc{
+    font-size: 25px;
+    font-weight: bold;
+    margin-right:30px;
+}
+
+.heart{
+    color: #e50914;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 .titleMovie{
     width: 220px;
 }
