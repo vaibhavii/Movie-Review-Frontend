@@ -71,7 +71,7 @@ function AddMovieComponent() {
             Country: country
         }
 
-        console.log(movie);
+        //console.log(movie);
 
         addMovieDetails(movie).then( response => { 
             if(response.message){

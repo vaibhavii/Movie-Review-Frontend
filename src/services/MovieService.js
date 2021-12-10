@@ -1,9 +1,52 @@
 export const movie_url = 'http://localhost:5000/movie' 
 export const omdb_url = 'http://www.omdbapi.com/?apikey=d799ca1&t='
-
+///movie/highestrated
+//highestgrossingmovies
+///moviereviews/:userId
+///moviefavorites/:userId
 
 export function getMovieDetails() {
     return fetch(movie_url, {
+        method: 'GET'
+    }).then(function (response) {
+        if(response.headers.get("content-type")!=null)
+            return response.json();
+        else return null;
+    });
+}
+
+export function getHighestRated() {
+    return fetch('http://localhost:5000/highestratedmovie', {
+        method: 'GET'
+    }).then(function (response) {
+        if(response.headers.get("content-type")!=null)
+            return response.json();
+        else return null;
+    });
+}
+
+export function getReviewedMovies(userId) {
+    return fetch('http://localhost:5000/moviereviews/' + userId, {
+        method: 'GET'
+    }).then(function (response) {
+        if(response.headers.get("content-type")!=null)
+            return response.json();
+        else return null;
+    });
+}
+
+export function getFavoritedMovies(userId) {
+    return fetch('http://localhost:5000/moviefavorites/' + userId, {
+        method: 'GET'
+    }).then(function (response) {
+        if(response.headers.get("content-type")!=null)
+            return response.json();
+        else return null;
+    });
+}
+
+export function getHighestGrossing() {
+    return fetch('http://localhost:5000/highestgrossingmovies', {
         method: 'GET'
     }).then(function (response) {
         if(response.headers.get("content-type")!=null)

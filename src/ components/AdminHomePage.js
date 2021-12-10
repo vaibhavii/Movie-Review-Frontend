@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {getMovieDetails, deleteMovie, searchMovie} from '../services/MovieService';
+import {getMovieDetails, deleteMovie, searchMovie, getHighestRated, getHighestGrossing, getReviewedMovies,getFavoritedMovies} from '../services/MovieService';
 import {getFavs, addFav, deleteFav} from '../services/FavoriteService';
 import {getReviewsByMovie, getReviewsByMovieAndUser, addReview, editReview, deleteReview} from '../services/ReviewService';
 import '../styles/login.css';
@@ -10,6 +10,8 @@ import { faEdit, faTrash, faFilm } from '@fortawesome/free-solid-svg-icons'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import EditMovieComponent from './EditMovieComponent';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import MovieDescription from './MovieDescription';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,15 +31,44 @@ function AdminHomePage() {
     const [allReviews, setAllReviews] = useState([]);
     const [userReview, setUserReviews] = useState([]);
     const [userFavorites, setUserFavorites] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [highestRatedMovies, setHighestRatedMovies] = useState([]);
+    const [highestgrossingmovies, setHighestGrossingMovies] = useState([]);
+    const [reviewedMovies, setReviewedMovies] = useState([]);
+    const [favoritedMovies, setFavoritedMovies] = useState([]);
+ 
+    const responsive = {
+        superLargeDesktop: {
+            breakpoint: {max: 4000, min: 3000},
+            items: 7
+        },
+        desktop: {
+            breakpoint: {max: 3000, min: 1024},
+            items: 4
+        },
+        tablet: {
+            breakpoint: {max: 1024, min: 464},
+            items: 2
+        },
+        mobile: {
+            breakpoint: {max: 464, min: 0},
+            items: 1
+        }
+    };
 
 
     const deleteMovieById = (id) => {
         deleteMovie(id).then(response => {
-            console.log(response);
+            getMovieDetails().then( response => { 
+                setMovies(response);
+            });
+            getHighestRated().then(response => {
+                setHighestRatedMovies(response);
+            })
+            getHighestGrossing().then(response => {
+                setHighestGrossingMovies(response);
+            })
         })
-        getMovieDetails().then( response => { 
-            setMovies(response);
-        });
     }
 
     const handleClose = () => {
@@ -67,7 +98,7 @@ function AdminHomePage() {
     const onSearch = () => {
         searchMovie(searchInput).then(res=>{
             if(res.length != 0 ){
-                setMovies(res);
+                setSearchResults(res);
             } else {
                 toast.error('No such movies found', {
                     position: "top-center",
@@ -96,6 +127,11 @@ function AdminHomePage() {
                     setUserFavorites(res);
                 })
             }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getFavoritedMovies(window.sessionStorage.getItem("user")).then(response => {
+                    setFavoritedMovies(response);
+                })
+            }
         })
     }
 
@@ -105,6 +141,11 @@ function AdminHomePage() {
             if (window.sessionStorage.getItem("user") != "admin"){
                 getFavs(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
                     setUserFavorites(res);
+                })
+            }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getFavoritedMovies(window.sessionStorage.getItem("user")).then(response => {
+                    setFavoritedMovies(response);
                 })
             }
         })
@@ -120,16 +161,31 @@ function AdminHomePage() {
         }
 
         addReview(review).then(res=>{
-            console.log(res);
-        })
-        getReviewsByMovie(currMovie.MovieID).then(res=>{
-            setAllReviews(res);
-        })
-        if (window.sessionStorage.getItem("user") != "admin"){
-            getReviewsByMovieAndUser(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
-                setUserReviews(res);
+            getReviewsByMovie(currMovie.MovieID).then(res=>{
+                setAllReviews(res);
             })
-        }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getReviewsByMovieAndUser(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
+                    setUserReviews(res);
+                })
+            }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getReviewedMovies(window.sessionStorage.getItem("user")).then(response => {
+                    setReviewedMovies(response);
+                })
+            }
+            getMovieDetails().then( response => { 
+                setMovies(response);
+            });
+            getHighestRated().then(response => {
+                setHighestRatedMovies(response);
+            })
+            getHighestGrossing().then(response => {
+                setHighestGrossingMovies(response);
+            })
+        })
+        
+        
     }
 
     const editReviewByUser = (rating, review, id) => {
@@ -142,30 +198,57 @@ function AdminHomePage() {
         console.log(review);
 
         editReview(review).then(res=>{
-            console.log(res);
-        })
-        getReviewsByMovie(currMovie.MovieID).then(res=>{
-            setAllReviews(res);
-        })
-        if (window.sessionStorage.getItem("user") != "admin"){
-            getReviewsByMovieAndUser(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
-                setUserReviews(res);
+            getReviewsByMovie(currMovie.MovieID).then(res=>{
+                setAllReviews(res);
             })
-        }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getReviewsByMovieAndUser(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
+                    setUserReviews(res);
+                })
+            }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getReviewedMovies(window.sessionStorage.getItem("user")).then(response => {
+                    setReviewedMovies(response);
+                })
+            }
+            getMovieDetails().then( response => { 
+                setMovies(response);
+            });
+            getHighestRated().then(response => {
+                setHighestRatedMovies(response);
+            })
+            getHighestGrossing().then(response => {
+                setHighestGrossingMovies(response);
+            })
+        })
+        
     }
 
     const deleteReviewByUser = (id) => {
         deleteReview(id).then(res=>{
-            console.log(res);
-        })
-        getReviewsByMovie(currMovie.MovieID).then(res=>{
-            setAllReviews(res);
-        })
-        if (window.sessionStorage.getItem("user") != "admin"){
-            getReviewsByMovieAndUser(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
-                setUserReviews(res);
+            getReviewsByMovie(currMovie.MovieID).then(res=>{
+                setAllReviews(res);
             })
-        }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getReviewsByMovieAndUser(currMovie.MovieID, window.sessionStorage.getItem("user")).then(res=>{
+                    setUserReviews(res);
+                })
+            }
+            if (window.sessionStorage.getItem("user") != "admin"){
+                getReviewedMovies(window.sessionStorage.getItem("user")).then(response => {
+                    setReviewedMovies(response);
+                })
+            }
+            getMovieDetails().then( response => { 
+                setMovies(response);
+            });
+            getHighestRated().then(response => {
+                setHighestRatedMovies(response);
+            })
+            getHighestGrossing().then(response => {
+                setHighestGrossingMovies(response);
+            })
+        })  
     }
 
     const getReviewsForMovie = (id) => {
@@ -190,10 +273,33 @@ function AdminHomePage() {
         }
     }
 
+    const clearSearchResults = ( ) => {
+
+        setSearchResults([]);
+        setSearchInput("");
+
+    }
+
     useEffect(()=>{
         getMovieDetails().then( response => { 
             setMovies(response);
         });
+        getHighestRated().then(response => {
+            setHighestRatedMovies(response);
+        })
+        getHighestGrossing().then(response => {
+            setHighestGrossingMovies(response);
+        })
+        if (window.sessionStorage.getItem("user") != "admin"){
+            getReviewedMovies(window.sessionStorage.getItem("user")).then(response => {
+                setReviewedMovies(response);
+            })
+        }
+        if (window.sessionStorage.getItem("user") != "admin"){
+            getFavoritedMovies(window.sessionStorage.getItem("user")).then(response => {
+                setFavoritedMovies(response);
+            })
+        }
     },[])
 
     return(
@@ -262,9 +368,16 @@ function AdminHomePage() {
                     </Button>
                     </Modal.Footer>
                 </Modal>
-                <div className="row">
-                    {movies.map((movie, i) => 
-                        <div key={i} className="col mt-4 pt-4 card-movie" >
+                <div className="row pt-4">
+                {searchResults.length != 0 && 
+                        <div>
+                            <h4 className="col-3">Your Search Results..</h4>
+                            <button className="btn btn-secondary" onClick={()=>{clearSearchResults()}}>Clear Search Results</button>
+                        </div>
+                    }
+                <Carousel responsive={responsive}>
+                    {searchResults.map((movie, i) => 
+                        <div key={i} className="col mt-4 pt-2 card-movie" >
                             <a onClick={()=>{
                                     getReviewsForMovie(movie.MovieID);
                                     getReviewsForMovieUser(movie.MovieID);
@@ -308,6 +421,207 @@ function AdminHomePage() {
                             </div>
                 </div>
                 )}
+                </Carousel>
+            </div>
+            <div className="row pt-4">
+            <h4>Highest Rated Movies</h4>
+                <Carousel responsive={responsive}>
+                    {highestRatedMovies.map((movie, i) => 
+                        <div key={i} className="col mt-4 pt-2 card-movie" >
+                            <a onClick={()=>{
+                                    getReviewsForMovie(movie.MovieID);
+                                    getReviewsForMovieUser(movie.MovieID);
+                                    getFavoritesForMovieUser(movie.MovieID);
+                                    setShowDesc(true);
+                                    setCurrMovie(movie);
+                                    }}><img className="imageHome" src={movie.ImageUrl}/></a>
+                            <div className="titleMovie">
+                                <span>{movie.MovieName}</span>
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faEdit} onClick={()=>{setSelectedMovie(movie); setShowEdit(true);}}/>}
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faTrash} onClick={()=>{ setShow(true); setDeleteId(movie.MovieID);}}/>}
+                            </div>
+                            <div>
+                            { movie.AVG_RATING != null &&
+                                <StarRatings
+                                    rating={movie.AVG_RATING}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            { movie.AVG_RATING == null &&
+                                <StarRatings
+                                    rating={0}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            <span className="rating">({movie.TotalReviews}</span>
+                            { movie.TotalReviews == 1 &&
+                                <span className="rating">&nbsp;Review)</span>
+                            }
+                            { movie.TotalReviews != 1 &&
+                                <span className="rating">&nbsp;Reviews)</span>
+                            }
+                            </div>
+                </div>
+                )}
+                </Carousel>
+            </div>
+            <div className="row pt-4">
+                <h4>Highest Grossing Movies</h4>
+                <Carousel responsive={responsive}>
+                    {highestgrossingmovies.map((movie, i) => 
+                        <div key={i} className="col mt-4 pt-2 card-movie" >
+                            <a onClick={()=>{
+                                    getReviewsForMovie(movie.MovieID);
+                                    getReviewsForMovieUser(movie.MovieID);
+                                    getFavoritesForMovieUser(movie.MovieID);
+                                    setShowDesc(true);
+                                    setCurrMovie(movie);
+                                    }}><img className="imageHome" src={movie.ImageUrl}/></a>
+                            <div className="titleMovie">
+                                <span>{movie.MovieName}</span>
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faEdit} onClick={()=>{setSelectedMovie(movie); setShowEdit(true);}}/>}
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faTrash} onClick={()=>{ setShow(true); setDeleteId(movie.MovieID);}}/>}
+                            </div>
+                            <div>
+                            { movie.AVG_RATING != null &&
+                                <StarRatings
+                                    rating={movie.AVG_RATING}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            { movie.AVG_RATING == null &&
+                                <StarRatings
+                                    rating={0}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            <span className="rating">({movie.TotalReviews}</span>
+                            { movie.TotalReviews == 1 &&
+                                <span className="rating">&nbsp;Review)</span>
+                            }
+                            { movie.TotalReviews != 1 &&
+                                <span className="rating">&nbsp;Reviews)</span>
+                            }
+                            </div>
+                </div>
+                )}
+                </Carousel>
+            </div>
+            <div className="row pt-4">
+                { reviewedMovies.length != 0 && <h4>Reviewed Movies</h4>}
+                <Carousel responsive={responsive}>
+                    {reviewedMovies.map((movie, i) => 
+                        <div key={i} className="col mt-4 pt-2 card-movie" >
+                            <a onClick={()=>{
+                                    getReviewsForMovie(movie.MovieID);
+                                    getReviewsForMovieUser(movie.MovieID);
+                                    getFavoritesForMovieUser(movie.MovieID);
+                                    setShowDesc(true);
+                                    setCurrMovie(movie);
+                                    }}><img className="imageHome" src={movie.ImageUrl}/></a>
+                            <div className="titleMovie">
+                                <span>{movie.MovieName}</span>
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faEdit} onClick={()=>{setSelectedMovie(movie); setShowEdit(true);}}/>}
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faTrash} onClick={()=>{ setShow(true); setDeleteId(movie.MovieID);}}/>}
+                            </div>
+                            <div>
+                            { movie.AVG_RATING != null &&
+                                <StarRatings
+                                    rating={movie.AVG_RATING}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            { movie.AVG_RATING == null &&
+                                <StarRatings
+                                    rating={0}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            <span className="rating">({movie.TotalReviews}</span>
+                            { movie.TotalReviews == 1 &&
+                                <span className="rating">&nbsp;Review)</span>
+                            }
+                            { movie.TotalReviews != 1 &&
+                                <span className="rating">&nbsp;Reviews)</span>
+                            }
+                            </div>
+                </div>
+                )}
+                </Carousel>
+            </div>
+            <div className="row pt-4">
+                { favoritedMovies.length != 0 && <h4>Your Favorites</h4>}
+                <Carousel responsive={responsive}>
+                    {favoritedMovies.map((movie, i) => 
+                        <div key={i} className="col mt-4 pt-2 card-movie" >
+                            <a onClick={()=>{
+                                    getReviewsForMovie(movie.MovieID);
+                                    getReviewsForMovieUser(movie.MovieID);
+                                    getFavoritesForMovieUser(movie.MovieID);
+                                    setShowDesc(true);
+                                    setCurrMovie(movie);
+                                    }}><img className="imageHome" src={movie.ImageUrl}/></a>
+                            <div className="titleMovie">
+                                <span>{movie.MovieName}</span>
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faEdit} onClick={()=>{setSelectedMovie(movie); setShowEdit(true);}}/>}
+                                { window.sessionStorage.getItem("user") == "admin" && <FontAwesomeIcon className="icons-update" icon={faTrash} onClick={()=>{ setShow(true); setDeleteId(movie.MovieID);}}/>}
+                            </div>
+                            <div>
+                            { movie.AVG_RATING != null &&
+                                <StarRatings
+                                    rating={movie.AVG_RATING}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            { movie.AVG_RATING == null &&
+                                <StarRatings
+                                    rating={0}
+                                    starRatedColor="red"
+                                    numberOfStars={10}
+                                    name='rating'
+                                    starDimension="12px"
+                                    starSpacing="1px"
+                                />
+                            }
+                            <span className="rating">({movie.TotalReviews}</span>
+                            { movie.TotalReviews == 1 &&
+                                <span className="rating">&nbsp;Review)</span>
+                            }
+                            { movie.TotalReviews != 1 &&
+                                <span className="rating">&nbsp;Reviews)</span>
+                            }
+                            </div>
+                </div>
+                )}
+                </Carousel>
             </div>
         </div>
 }

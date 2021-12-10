@@ -161,6 +161,10 @@ function MovieDescription(props) {
                             <div className="col-10">{props.movie.Genre}</div>
                         </div>
                         <div className="row pt-4">
+                            <div className="col-2">Box Office:</div>
+                            <div className="col-10">${props.movie.BoxOfficeCollection}</div>
+                        </div>
+                        <div className="row pt-4">
                             <div className="col-2">ReleaseDate:</div>
                             <div className="col-10">{props.movie.ReleaseDate.split("T")[0]}</div>
                         </div>
