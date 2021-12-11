@@ -36,10 +36,31 @@
     cursor: pointer;
 }
 
+.sign-out-btn{
+    font-size: 24px;
+    color: #fff;
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+.user-edit-btn{
+    width: 120px;
+    margin-left: 50%;
+    margin-top: 5%;
+}
+
 .movie-name-desc{
     font-size: 25px;
     font-weight: bold;
     margin-right:30px;
+}
+
+.label-form{
+    margin-top: 5px;
+}
+
+.button-row{
+    margin-top: 20px;
 }
 
 .heart{
@@ -148,6 +169,16 @@
       margin-left: 5px;
       margin-top:5px;
       cursor: pointer;
+  }
+
+  .input-profile{
+      width: 100%;
+  }
+
+  .user-container{
+    padding-left:22%;
+    padding-right:22%;
+    padding-top: 5%;
   }
 
   .card-movie{

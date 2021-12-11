@@ -6,7 +6,7 @@ import '../styles/login.css';
 import StarRatings from 'react-star-ratings';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faTrash, faFilm } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faTrash, faFilm, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import EditMovieComponent from './EditMovieComponent';
@@ -157,7 +157,7 @@ function AdminHomePage() {
             Rating: rating,
             Review: review,
             UserId: window.sessionStorage.getItem("user"),
-            MovieID: currMovie.MovieID
+            MovieID: currMovie.MovieID,
         }
 
         addReview(review).then(res=>{
@@ -327,9 +327,14 @@ function AdminHomePage() {
                     <div className="col-2 pt-1">
                         <button className="btn btn-danger" onClick={()=>{onSearch();}}>Search</button>
                     </div>
-                    <div className="col-2 pt-1">
-                        <button className="btn btn-danger" onClick={()=>{window.sessionStorage.removeItem("user"); navigate('/')}}>Sign Out</button>
+                    <div className="col-1 pt-2">
+                        <FontAwesomeIcon icon={faSignOutAlt} className="sign-out-btn" onClick={()=>{window.sessionStorage.removeItem("user"); navigate('/')}}/>
                     </div>
+                    { window.sessionStorage.getItem("user") != "admin" &&
+                    <div className="col-1 pt-2">
+                        <FontAwesomeIcon icon={faUser} className="sign-out-btn" onClick={()=>{navigate('/users/' + window.sessionStorage.getItem("user"))}}/>
+                    </div>
+                    }
             </div>
             {
                 showEdit &&

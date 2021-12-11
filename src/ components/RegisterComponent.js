@@ -14,6 +14,7 @@ function RegisterComponent(props) {
     const [confirmPassword, setConfirmPassword ] = useState("");
     const [firstName, setFirstName ] = useState("");
     const [lastName, setLastName ] = useState("");
+    const [location, setLocation] = useState("");
     const history = useNavigate();
 
     const usernameChanged = (usernameInput) => {
@@ -41,7 +42,7 @@ function RegisterComponent(props) {
             Username: username,
             FirstName: password,
             LastName: lastName,
-            Location: 'United States',
+            Location: location,
             Password: password
         };
 
@@ -111,6 +112,11 @@ function RegisterComponent(props) {
                         placeholder={"Last Name"} 
                         value={lastName}
                         onChange={(e)=>{lastNameChanged(e.target.value)}}
+                    />
+                    <input className={"form-control my-2"} type={"text"}
+                        placeholder={"Location (Country)"} 
+                        value={location}
+                        onChange={(e)=>{setLocation(e.target.value)}}
                     />
                   <button className={"red-button my-2"} type={"button"} onClick={register}>
                       Sign Up

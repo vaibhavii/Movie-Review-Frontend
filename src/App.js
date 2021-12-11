@@ -8,6 +8,7 @@ import RegisterComponent from './ components/RegisterComponent';
 import AdminHomePage from './ components/AdminHomePage';
 import AddMovieComponent from './ components/AddMovieComponent';
 import MovieDescription from './ components/MovieDescription';
+import UserProfileComponent from './ components/UserProfileComponent';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/home" element={<AdminHomePage />} />
           <Route exact path="/admin/movie" element={<AddMovieComponent />} />
           <Route path='/movie/:movieId' element={<MovieDescription/>} />
+          <Route path='/users/:userId' element={<UserProfileComponent/>} />
         </Routes>
     </BrowserRouter>
   );
