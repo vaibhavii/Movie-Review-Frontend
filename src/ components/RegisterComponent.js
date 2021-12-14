@@ -41,7 +41,7 @@ function RegisterComponent(props) {
     const register = () => {
         var user = {
             Username: username,
-            FirstName: password,
+            FirstName: firstName,
             LastName: lastName,
             Location: location,
             Password: password
