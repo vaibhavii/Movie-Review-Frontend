@@ -377,7 +377,6 @@ function AdminHomePage() {
                     { window.sessionStorage.getItem("user") == "admin" &&
                     <div className="col-3 statistics-movie-button">
                         <button className="btn btn-danger" onClick={()=>{
-                            //window.location.href='http://127.0.0.1:6439/';
                             navigate('/stats');
                         }}>View Analytics</button>
                     </div>

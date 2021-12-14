@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
+// Component for sign in
 function LoginComponent() {
 
     const [username, setUsername] = useState("");

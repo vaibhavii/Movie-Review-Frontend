@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 
+// Movie Description Component showing a particular movie's detailed info and reviews
 function MovieDescription(props) {
 
     const [show, setShow] = useState(false);

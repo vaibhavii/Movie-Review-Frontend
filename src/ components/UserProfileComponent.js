@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash, faFilm, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
+// user profile component for editing user details
 function UserProfileComponent(){
 
     const[firstname, setFirstName] = useState("");

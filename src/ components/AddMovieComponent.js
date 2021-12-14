@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
+// component for adding a new movie
 function AddMovieComponent() {
 
     const [ name, setName ] = useState("");

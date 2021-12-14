@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Link} from 'react-router-dom';
 
 
+// Register component for signup
 function RegisterComponent(props) {
 
     const [username, setUsername] = useState("");

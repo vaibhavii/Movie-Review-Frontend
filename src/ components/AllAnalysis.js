@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {getTotalByGenre, getBOByGenre, getRatingByGenre, getAnalytics, getUsersAnalysis} from '../services/AnalyticsService';
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryAxis, VictoryLine, VictoryLabel } from 'victory';
 
+// component for viewing all the analysis
 function AllAnalysis(){
 
 
@@ -12,17 +13,13 @@ function AllAnalysis(){
     useEffect(()=>{
 
         getAnalytics().then(response=>{
-            //console.log(response);
             setAnalytics(response);
-            //console.log(JSON.stringify(response));
         })
         getUsersAnalysis().then(response=>{
             setUserAnalytics(response);
         })
 
     },[])
-
-    //padding={{ left: 80, right: 100 }}
 
     return(
             <div className="container">
