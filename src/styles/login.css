@@ -81,6 +81,9 @@
     height: 500px;
     width: 500px;
 }
+.btn-analytics{
+    width:175px;
+}
 
 .textarea-review-add{
     width: 100%;
@@ -95,6 +98,15 @@
 .add-edit-review-btn{
     width: 150px;
     margin: 5px;
+}
+
+.title-chart-an{
+    margin-left: 73px;
+}
+
+.size{
+    width: 700px;
+    height:500px;
 }
 
 .rating{
