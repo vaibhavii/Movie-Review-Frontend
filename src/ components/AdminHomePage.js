@@ -68,6 +68,21 @@ function AdminHomePage() {
             getHighestGrossing().then(response => {
                 setHighestGrossingMovies(response);
             })
+            searchMovie(searchInput).then(res=>{
+                if(res.length != 0 ){
+                    setSearchResults(res);
+                } else {
+                    toast.error('No such movies found', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            })
         })
     }
 
@@ -158,6 +173,7 @@ function AdminHomePage() {
             Review: review,
             UserId: window.sessionStorage.getItem("user"),
             MovieID: currMovie.MovieID,
+            DateCreated: (new Date()).toISOString().split('T')[0]
         }
 
         addReview(review).then(res=>{
@@ -347,6 +363,7 @@ function AdminHomePage() {
                 <div>
                     <MovieDescription deleteFav={deleteFavorite} addFavForUser={addFavorite} favorites={userFavorites} movie={currMovie} delete={deleteReviewByUser} edit={editReviewByUser} add={addReviewByUser} reviews={allReviews} reviewForUser={userReview} goBack={goBackMovie}></MovieDescription>
                 </div>
+                //http://127.0.0.1:6486/
             }
             { (!showEdit && !showDesc) &&
              <div className="container pt-4">
@@ -356,6 +373,15 @@ function AdminHomePage() {
                         <button type={"button"} className="btn btn-danger" onClick={()=>{navigate('/admin/movie')}}>Add Movie</button>
                     </div>
                     }
+                    <div className="col-6"></div>
+                    { window.sessionStorage.getItem("user") == "admin" &&
+                    <div className="col-3 statistics-movie-button">
+                        <button className="btn btn-danger" onClick={()=>{
+                            window.location.href='http://127.0.0.1:6439/';
+                            //navigate('/stats');
+                        }}>View Statistics</button>
+                    </div>
+                    }       
                 </div>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>

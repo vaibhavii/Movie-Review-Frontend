@@ -9,6 +9,7 @@ import AdminHomePage from './ components/AdminHomePage';
 import AddMovieComponent from './ components/AddMovieComponent';
 import MovieDescription from './ components/MovieDescription';
 import UserProfileComponent from './ components/UserProfileComponent';
+import AllAnalysis from './ components/AllAnalysis';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route exact path="/admin/movie" element={<AddMovieComponent />} />
           <Route path='/movie/:movieId' element={<MovieDescription/>} />
           <Route path='/users/:userId' element={<UserProfileComponent/>} />
+          <Route path='/stats' element={<AllAnalysis/>} />
         </Routes>
     </BrowserRouter>
   );

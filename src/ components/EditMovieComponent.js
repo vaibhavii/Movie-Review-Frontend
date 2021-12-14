@@ -17,8 +17,8 @@ function EditMovieComponent(props){
         setDesc(props.movie.Description);
         setActors(props.movie.Actors);
         setDirector(props.movie.Director);
-        setReleaseDate(props.movie.ReleaseDate);
-        console.log(props.movie.ReleaseDate);
+        setReleaseDate(props.movie.ReleaseDate.split("T")[0]);
+        //console.log(props.movie.ReleaseDate);
         setBoxOffice(props.movie.BoxOfficeCollection);
         setRuntime(props.movie.LongMinutes);
         setCountry('United States');
@@ -67,9 +67,9 @@ function EditMovieComponent(props){
 
         updateMovieDetails(movie).then( response => { 
             if(response.message){
-                toast.success('Movie Added Successfully!', {
+                toast.success('Movie Updated Successfully!', {
                     position: "top-center",
-                    autoClose: 5000,
+                    autoClose: 1000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,

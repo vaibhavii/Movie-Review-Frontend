@@ -77,9 +77,18 @@
     color: #e50914;
 }
 
+.container-charts{
+    height: 500px;
+    width: 500px;
+}
+
 .textarea-review-add{
     width: 100%;
     height:200px;
+}
+
+.statistics-movie-button{
+    text-align : right;
 }
 
 

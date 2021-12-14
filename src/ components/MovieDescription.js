@@ -20,7 +20,9 @@ function MovieDescription(props) {
 
     useEffect(()=>{
         if(props.reviewForUser.length != 0){
-            setRating(props.reviewForUser[0].Rating);
+            if(props.reviewForUser[0].Rating != null){
+                setRating(props.reviewForUser[0].Rating);
+            }
             setReview(props.reviewForUser[0].Review);
         }
     },[props.reviewForUser])
@@ -67,10 +69,10 @@ function MovieDescription(props) {
                 <span className="pt-4">
                     <span className="movie-name-desc">{props.movie.MovieName}</span>
                     {
-                       isFav && <FontAwesomeIcon className="heart" icon={faHeart} onClick={()=>{props.deleteFav(); setIsFav(false);}}/>
+                       isFav && window.sessionStorage.getItem("user") != "admin" && <FontAwesomeIcon className="heart" icon={faHeart} onClick={()=>{props.deleteFav(); setIsFav(false);}}/>
                     }
                     {
-                       !isFav && <FontAwesomeIcon className="heart" icon={farHeart} onClick={()=>{props.addFavForUser();setIsFav(true);}}/>
+                       !isFav && window.sessionStorage.getItem("user") != "admin" && <FontAwesomeIcon className="heart" icon={farHeart} onClick={()=>{props.addFavForUser();setIsFav(true);}}/>
                     }
                 </span>
             </div>
@@ -133,6 +135,7 @@ function MovieDescription(props) {
             <div className="row pt-2">
                 <div className="col-3">
                     <img src={props.movie.ImageUrl}/>
+                    { props.movie.AVG_RATING != null &&
                     <StarRatings
                             rating={props.movie.AVG_RATING}
                             starRatedColor="red"
@@ -141,6 +144,17 @@ function MovieDescription(props) {
                             starDimension="15px"
                             starSpacing="1px"
                     />
+                    }
+                    { props.movie.AVG_RATING == null &&
+                    <StarRatings
+                            rating={0}
+                            starRatedColor="red"
+                            numberOfStars={10}
+                            name='rating'
+                            starDimension="15px"
+                            starSpacing="1px"
+                    />
+                    }
                     <span className="rating"><b>({props.movie.TotalReviews}</b></span>
                             { props.movie.TotalReviews == 1 &&
                                 <span className="rating"><b>&nbsp;Review)</b></span>
